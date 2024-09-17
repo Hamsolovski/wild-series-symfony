@@ -7,12 +7,22 @@
 {% block body %}
 <h1>{{ category.name }}</h1>
 
-{# <ul class='list-group'>
-{% for category in categories %}
-    <li class='list-group-item'>{{ category.name }}</li>
+<div class="d-flex flex-wrap">
+{% for program in programs %}
+    <article class="card m-1" style="width: 18rem;">
+        <div class="card-header">{{ program.category.name }}</div>
+        <div class="card-body">
+            <h2 class="card-title">{{ program.title }}</h2>
+            <p class="card-text">{{ program.synopsis }}</p>
+        </div>
+        <div class="card-footer">
+            {{ loop.index }}
+            <a href='{{ path('program_{id}', { id: program.id }) }}' class='card-link'>Consulter</a>
+        </div>
+    </article>
     {% else %}
-        Aucune catégorie trouvée
+        Aucune série trouvée
     {% endfor %}
-</ul> #}
+</div>
 
 {% endblock %}
