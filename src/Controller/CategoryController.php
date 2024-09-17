@@ -19,4 +19,21 @@ class CategoryController extends AbstractController
             'categories' => $categories,
         ]);
     }
+
+    #[Route('/category/{categoryName}', methods: ['GET'], name: 'category_show')]
+    public function show(string $categoryName, CategoryRepository $categoryRepository): Response
+    {
+        $category = $categoryRepository->findOneBy(['name' => $categoryName]);
+
+        if (!$category) {
+            throw $this->createNotFoundException(
+                'No category named ' . $categoryName . ' found in database'
+            );
+        }
+
+        return $this->render('category/show.html.twig', [
+            'website' => 'Wild Series',
+            'category' => $category,
+        ]);
+    }
 }
