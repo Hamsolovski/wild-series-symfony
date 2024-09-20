@@ -1,19 +1,23 @@
 {% extends 'base.html.twig' %}
 
 
-{% block title %}Série #{{program.id}}{% endblock %}
+{% block title %}{{ program.title }}{% endblock %}
 
 
 {% block body %}
-<article class="card m-1" style="width: 18rem;">
-        <div class="card-header">{{ program.category.name }}</div>
-        <img class='card-img-top' src='{{ program.poster }}' alt='{{ program.title }}' >
-        <div class="card-body">
-            <h2 class="card-title">{{ program.title }}</h2>
-            <p class="card-text">{{ program.synopsis }}</p>
-        </div>
-        <div class="card-footer">{{ program.id }}</div>
-    </article>
+<h1>{{ program.title }}</h1>
+<img class='card-img-top' src='{{ program.poster }}' alt='{{ program.title }}' >
+<p>Categorie : {{ program.category.name }}</p>
+<p>Saisons :
+    {% for season in program.seasons %}
+        <a href='{{path('program_season_show', {programId: program.id, seasonId: season.id})}}'>{{ season.number }}</a>
+    {% else %}
+        aucune pour le moment
+    {% endfor %}
+</p>
+<p>{{ program.synopsis }}</p>   
+<div class="card-footer">{{ program.id }}</div>
+</article>
 
 
 {% endblock %}

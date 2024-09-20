@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ program.title }} - Saison {{season.number}}{% endblock %}
+
+{% block body %}
+<h1>{{ program.title }} - Saison {{season.number}}</h1>
+<p>Année de sortie : {{season.year}}</p>
+<p>{{season.description}}</p>
+
+<div class="d-flex flex-wrap">
+{% for episode in season.episodes %}
+    <article class="card m-1" style="width: 18rem;">
+        <div class="card-header">Episode {{ episode.number }}</div>
+        <div class="card-body">
+            <h2 class="card-title">{{ episode.title }}</h2>
+            <p class="card-text">{{ episode.synopsis }}</p>
+        </div>
+    </article>
+{% endfor %}
+</div>
+{% endblock %}
