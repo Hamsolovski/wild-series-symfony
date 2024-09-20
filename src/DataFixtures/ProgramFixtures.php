@@ -6,9 +6,11 @@ use App\Entity\Program;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class ProgramFixtures extends Fixture implements DependentFixtureInterface
 {
+    const SERIES = 10;
     const PROGRAMS = [
         [
             'title' => '24h Chrono',
@@ -120,6 +122,7 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
                 'synopsis' => 'Les zombies sont là, mais les gens se tuent entre eux',
                 'category' => 'category_Horreur',
             ],
+
             [
                 'title' => 'Les Contes de la Crypte',
                 'synopsis' => 'L\'horreur du bon vieux temps',
@@ -139,16 +142,18 @@ class ProgramFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        foreach(self::PROGRAMS as $key => $current) {
+        $faker = Factory::create();
+
+        for($i = 1; $i <= self::SERIES; $i++) {
             $program = new Program();
-            $program->setTitle($current['title']);
-            $program->setSynopsis($current['synopsis']);
-            $program->setCategory($this->getReference($current['category']));
-            $this->addReference('program_' . $current['title'], $program);
+            $program->setTitle($faker->words(3, true));
+            $program->setSynopsis($faker->paragraphs(2, true));
+            $program->setCategory($this->getReference('category_' . $faker->numberBetween(1, 5)));
+            
             $manager->persist($program);
-            $manager->flush();
+            $this->addReference('program_' . $i, $program);
         }
-        
+        $manager->flush();
     }
 
     public function getDependencies()
